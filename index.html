@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <meta name="description" content="HealthMate helps you manage your medication schedules, track doses, and stay informed about your health routines.">
+    <meta name="theme-color" content="#f5f7fb">
+
+    <title>HealthMate | Personal Health Dashboard</title>
+
+    <script>
+        try {
+            if (localStorage.getItem("hm-token")) {
+                document.documentElement.classList.add("session-checking");
+            }
+        } catch (error) {
+            console.warn("Saved session could not be checked.");
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="session-loader" role="status" aria-live="polite">
+    <span>Loading your dashboard…</span>
+</div>
+
+<!-- ================= AUTHENTICATION ================= -->
+
+<div class="auth" id="auth">
+
+    <video
+        class="auth-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        tabindex="-1"
+        aria-hidden="true"
+    >
+        <source src="v1.mp4" type="video/mp4">
+        <source src="v1.webm" type="video/webm">
+    </video>
+
+    <header class="auth-header">
+        <span class="auth-header-mark" aria-hidden="true">💊</span>
+        <span>HealthMate</span>
+    </header>
+
+    <aside class="auth-side" aria-hidden="true">
+        <div>
+            <p class="big">
+                Never miss<br>
+                your adventure.
+            </p>
+        </div>
+    </aside>
+
+    <section class="auth-main" aria-labelledby="auth-title">
+
+        <div class="auth-card card">
+
+            <div class="auth-brand">💊 HealthMate</div>
+
+            <h1 id="auth-title">SIGN IN</h1>
+
+            <p class="sub" id="auth-sub">
+                Sign in with your email address
+            </p>
+
+            <!-- LOGIN FORM -->
+
+            <form id="login-form" novalidate>
+
+                <label for="l-email">Email address</label>
+
+                <input
+                    id="l-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    inputmode="email"
+                    placeholder="yourname@gmail.com"
+                    aria-describedby="e-l-email"
+                >
+
+                <p class="err" id="e-l-email" role="alert"></p>
+
+                <label for="l-pass">Password</label>
+
+                <div class="pw">
+
+                    <input
+                        id="l-pass"
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        aria-describedby="e-l-pass"
+                    >
+
+                    <button
+                        type="button"
+                        class="pw-toggle"
+                        data-for="l-pass"
+                        aria-label="Show password"
+                        aria-pressed="false"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+                <p class="err" id="e-l-pass" role="alert"></p>
+
+                <p class="err" id="login-err" role="alert"></p>
+
+                <button type="submit" class="btn primary wide">
+                    Sign in
+                </button>
+
+                <p class="hint" id="demo-hint">
+                    Demo account: demo@healthmate.app / healthmate1
+                </p>
+
+                <div class="auth-divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div class="social-row">
+
+                    <button
+                        type="button"
+                        class="social"
+                        id="google-login"
+                    >
+                        <img
+                            class="social-logo google-logo"
+                            src="google-logo.png"
+                            alt=""
+                        >
+                        Google (Demo)
+                    </button>
+
+                    <button
+                        type="button"
+                        class="social"
+                        id="facebook-login"
+                    >
+                        <span class="social-icon facebook" aria-hidden="true">f</span>
+                        Facebook (Demo)
+                    </button>
+
+                </div>
+
+                <p class="hint">
+                    Social sign-in is currently demonstration functionality.
+                </p>
+
+                <p class="switch">
+                    New to HealthMate?
+
+                    <button
+                        type="button"
+                        class="link"
+                        data-auth="register"
+                    >
+                        Create account
+                    </button>
+                </p>
+
+            </form>
+
+
+            <!-- REGISTRATION FORM -->
+
+            <form id="reg-form" novalidate hidden>
+
+                <label for="r-name">Full name</label>
+
+                <input
+                    id="r-name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    aria-describedby="e-r-name"
+                >
+
+                <p class="err" id="e-r-name" role="alert"></p>
+
+
+                <label for="r-email">Email address</label>
+
+                <input
+                    id="r-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    inputmode="email"
+                    aria-describedby="e-r-email"
+                >
+
+                <p class="err" id="e-r-email" role="alert"></p>
+
+
+                <label for="r-pass">Password</label>
+
+                <div class="pw">
+
+                    <input
+                        id="r-pass"
+                        name="password"
+                        type="password"
+                        autocomplete="new-password"
+                        aria-describedby="r-rule e-r-pass"
+                    >
+
+                    <button
+                        type="button"
+                        class="pw-toggle"
+                        data-for="r-pass"
+                        aria-label="Show password"
+                        aria-pressed="false"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+                <p class="hint" id="r-rule">
+                    At least 8 characters, with a letter and a number.
+                </p>
+
+                <p class="err" id="e-r-pass" role="alert"></p>
+
+
+                <label for="r-pass2">Confirm password</label>
+
+                <input
+                    id="r-pass2"
+                    name="confirmPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    aria-describedby="e-r-pass2"
+                >
+
+                <p class="err" id="e-r-pass2" role="alert"></p>
+
+
+                <button type="submit" class="btn primary wide">
+                    Create account
+                </button>
+
+                <p class="switch">
+                    Already registered?
+
+                    <button
+                        type="button"
+                        class="link"
+                        data-auth="login"
+                    >
+                        Log in
+                    </button>
+                </p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <footer class="auth-footer">
+        <span>&copy; 2026 HealthMate</span>
+        <span>Personal health, simplified</span>
+    </footer>
+
+</div>
+
+
+<!-- ================= SOCIAL AUTHENTICATION DIALOG ================= -->
+
+<dialog
+    id="social-auth-dialog"
+    class="social-auth-dialog"
+    aria-labelledby="social-auth-title"
+>
+
+    <div class="social-auth-top">
+
+        <span class="social-auth-brand" id="social-auth-brand">G</span>
+
+        <span id="social-auth-heading">
+            Sign in with Google
+        </span>
+
+    </div>
+
+
+    <div class="social-auth-body" id="social-choose-step">
+
+        <div class="social-auth-mark" id="social-auth-mark">G</div>
+
+        <h2 id="social-auth-title">Choose an account</h2>
+
+        <p class="social-auth-app" id="social-auth-app">
+            to continue to HealthMate
+        </p>
+
+        <div class="social-account-list">
+
+            <button
+                type="button"
+                class="social-account"
+                id="social-account"
+            >
+
+                <span class="social-avatar">JA</span>
+
+                <span>
+                    <b>Joseph Arthur</b>
+                    <small>josefarthur387@gmail.com</small>
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="social-another"
+                id="social-another"
+            >
+                <span aria-hidden="true">+</span>
+                Use another account
+            </button>
+
+        </div>
+
+        <p class="social-auth-policy">
+            Before using this app, you can review HealthMate's
+            Privacy Policy and Terms of Service.
+        </p>
+
+    </div>
+
+
+    <div
+        class="social-auth-body social-another-step"
+        id="social-another-step"
+        hidden
+    >
+
+        <div class="social-another-mark" id="social-another-mark">G</div>
+
+        <h2>Use another account</h2>
+
+        <p>Enter the account you want to continue with.</p>
+
+        <form id="social-another-form" novalidate>
+
+            <label for="social-another-email">
+                Email or phone
+            </label>
+
+            <input
+                id="social-another-email"
+                type="email"
+                autocomplete="email"
+                placeholder="Email or phone"
+            >
+
+            <p
+                class="social-another-error"
+                id="social-another-error"
+                role="alert"
+            ></p>
+
+            <div class="social-another-actions">
+
+                <button
+                    type="button"
+                    class="social-cancel"
+                    id="social-another-back"
+                >
+                    Back
+                </button>
+
+                <button type="submit" class="social-continue">
+                    Next
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <div
+        class="social-auth-body social-confirm"
+        id="social-confirm-step"
+        hidden
+    >
+
+        <div class="social-confirm-mark" id="social-confirm-mark">G</div>
+
+        <h2>You're signing back in to HealthMate</h2>
+
+        <button
+            type="button"
+            class="social-selected-account"
+            id="social-selected-account"
+        >
+
+            <span class="social-avatar">JA</span>
+
+            <span>josefarthur387@gmail.com</span>
+
+        </button>
+
+        <div class="social-confirm-copy">
+
+            <p>
+                Review HealthMate's Privacy Policy and Terms of Service
+                to understand how your data is collected and protected.
+            </p>
+
+            <p>
+                To make changes at any time, go to your account settings.
+            </p>
+
+        </div>
+
+        <div class="social-confirm-actions">
+
+            <button
+                type="button"
+                class="social-cancel"
+                id="social-cancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="social-continue"
+                id="social-continue"
+            >
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+</dialog>
+
+
+<!-- ================= MAIN APPLICATION ================= -->
+
+<div class="app">
+
+    <!-- NAVIGATION -->
+
+    <nav class="nav" aria-label="Main navigation">
+
+        <div class="brand" aria-hidden="true">
+            💊<span class="bname"> HealthMate</span>
+        </div>
+
+
+        <button
+            type="button"
+            class="item"
+            data-nav="home"
+            aria-current="page"
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 11l9-8 9 8M5 10v10h14V10"/>
+            </svg>
+
+            <span>Home</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="item"
+            data-nav="meds"
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect
+                    x="3"
+                    y="9"
+                    width="18"
+                    height="6"
+                    rx="3"
+                    transform="rotate(-35 12 12)"
+                />
+                <path d="M10 7.5l4.5 6.5"/>
+            </svg>
+
+            <span>Medications</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="item"
+            data-nav="history"
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3 2"/>
+            </svg>
+
+            <span>History</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="item"
+            data-nav="reminders"
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"/>
+            </svg>
+
+            <span>Reminders</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="item"
+            data-logout
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/>
+            </svg>
+
+            <span>Log out</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="theme theme-desk"
+            data-theme-toggle
+            aria-label="Switch colour theme"
+        >
+            ◐
+        </button>
+
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main>
+
+        <!-- DASHBOARD HEADER -->
+
+        <header class="top" data-view="home">
+
+            <div>
+
+                <p class="top-brand">
+                    <span aria-hidden="true">💊</span>
+                    HealthMate
+                </p>
+
+                <h1 id="greet">Good day</h1>
+
+                <p class="sub" id="date"></p>
+
+            </div>
+
+            <button
+                type="button"
+                class="theme"
+                data-theme-toggle
+                aria-label="Switch colour theme"
+            >
+                ◐
+            </button>
+
+        </header>
+
+
+        <!-- NEXT DOSE AND ADHERENCE -->
+
+        <section
+            class="card hero"
+            data-view="home"
+            aria-labelledby="next-h"
+        >
+
+            <div
+                class="ring"
+                role="img"
+                id="ring-a11y"
+                aria-label="Today's medication adherence"
+            >
+
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+
+                    <circle
+                        class="track"
+                        cx="60"
+                        cy="60"
+                        r="52"
+                    />
+
+                    <circle
+                        class="taken"
+                        id="arc-taken"
+                        cx="60"
+                        cy="60"
+                        r="52"
+                    />
+
+                    <circle
+                        class="missed"
+                        id="arc-missed"
+                        cx="60"
+                        cy="60"
+                        r="52"
+                    />
+
+                </svg>
+
+                <div class="center">
+
+                    <b id="ring-n">0/0</b>
+
+                    <span>doses taken</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="next">
+
+                <h2
+                    id="next-h"
+                    class="sub"
+                    style="font-weight:500;margin:0"
+                >
+                    Next dose
+                </h2>
+
+                <p
+                    class="when"
+                    id="next-when"
+                    aria-live="polite"
+                >
+                    –
+                </p>
+
+                <p class="what" id="next-what"></p>
+
+                <button
+                    type="button"
+                    class="btn primary"
+                    id="next-btn"
+                >
+                    Mark as taken
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- NEARBY HOSPITAL FINDER -->
+
+        <section
+            class="card hospital-card"
+            data-view="home"
+            aria-labelledby="hospital-h"
+        >
+
+            <div>
+                <h2 id="hospital-h">Find a nearby hospital</h2>
+                <p class="sub">
+                    Use your current location to search for nearby hospitals in Google Maps.
+                    Your location is requested only when you choose to use this feature.
+                </p>
+                <p class="hospital-emergency-note">
+                    For a life-threatening emergency, call your local emergency number.
+                    This tool opens Maps; it does not contact a hospital for you.
+                </p>
+                <p
+                    class="hospital-status"
+                    id="hospital-status"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+            </div>
+
+            <div class="hospital-actions">
+                <button
+                    type="button"
+                    class="btn primary"
+                    id="find-hospital"
+                >
+                    Use my location
+                </button>
+                <a
+                    class="btn hospital-map-link"
+                    id="hospital-map-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    hidden
+                >
+                    Open nearby hospitals in Google Maps
+                </a>
+            </div>
+
+        </section>
+
+
+        <!-- TODAY'S DOSES -->
+
+        <section
+            class="card doses"
+            data-view="home"
+            aria-labelledby="doses-h"
+        >
+
+            <div class="doses-head">
+                <h2 id="doses-h">Today's doses</h2>
+                <button
+                    type="button"
+                    class="btn primary"
+                    id="print-med-list"
+                >
+                    Print medication list
+                </button>
+            </div>
+
+            <ul id="list"></ul>
+
+        </section>
+
+
+        <!-- ADHERENCE CALENDAR -->
+
+        <section
+            class="card heat-card"
+            data-view="home"
+            aria-labelledby="heat-h"
+        >
+
+            <h2 id="heat-h">Last 4 weeks</h2>
+
+            <div
+                class="heat"
+                id="heat"
+                role="img"
+                aria-label="Adherence calendar for the last four weeks"
+            ></div>
+
+            <div class="legend">
+
+                <span>Fewer doses taken</span>
+
+                <span>All doses taken</span>
+
+                <span>Missed day</span>
+
+            </div>
+
+        </section>
+
+
+        <!-- MEDICATION SAFETY TIPS -->
+
+        <section
+            class="card advice-card"
+            data-view="home"
+            aria-labelledby="advice-h"
+        >
+
+            <h2 id="advice-h">Medication safety tips</h2>
+
+            <ul class="advice-list">
+                <li>
+                    Take medicines as prescribed and follow the package directions.
+                    Ask a pharmacist if anything is unclear.
+                </li>
+                <li>
+                    If you miss a dose, follow the medicine’s instructions or ask a
+                    pharmacist. Don’t double a dose unless a healthcare professional
+                    tells you to.
+                </li>
+                <li>
+                    Talk with your doctor or pharmacist before changing or stopping
+                    a medicine, and ask them about new or concerning side effects.
+                </li>
+                <li>
+                    Store medicines as the label directs, in their original packaging
+                    and out of reach of children and pets.
+                </li>
+            </ul>
+
+            <p class="advice-disclaimer">
+                These are general tips, not personal medical advice. HealthMate is
+                not monitored for emergencies. For severe or rapidly worsening
+                symptoms, contact your local emergency service.
+            </p>
+
+        </section>
+
+
+        <!-- MEDICATION MANAGEMENT -->
+
+        <section
+            class="card meds"
+            data-view="meds"
+            hidden
+            aria-labelledby="meds-h"
+        >
+
+            <div class="meds-head">
+
+                <div>
+
+                    <h1 id="meds-h">Medications</h1>
+
+                    <p class="sub" id="meds-count"></p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn primary"
+                    id="add-med"
+                >
+                    Add medication
+                </button>
+
+            </div>
+
+            <ul id="med-list"></ul>
+
+            <p class="empty" id="meds-empty" hidden>
+                No medications yet. Add your first one to start getting reminders.
+            </p>
+
+        </section>
+
+        <!-- ACTIVITY HISTORY -->
+        <section
+            class="card hist"
+            data-view="history"
+            hidden
+            aria-labelledby="hist-h"
+        >
+
+            <div>
+
+                <h1 id="hist-h">Activity history</h1>
+
+                <p class="sub">
+                    Your recorded doses from the last four weeks.
+                </p>
+
+            </div>
+
+            <div class="stats" id="h-stats"></div>
+
+
+            <div class="filters">
+
+                <div class="segs" role="group" aria-label="Filter by status">
+
+                    <button
+                        type="button"
+                        class="seg"
+                        data-st="all"
+                        aria-pressed="true"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        type="button"
+                        class="seg"
+                        data-st="taken"
+                        aria-pressed="false"
+                    >
+                        Taken
+                    </button>
+
+                    <button
+                        type="button"
+                        class="seg"
+                        data-st="missed"
+                        aria-pressed="false"
+                    >
+                        Missed
+                    </button>
+
+                </div>
+
+
+                <label class="sel">
+
+                    <span>Medication</span>
+
+                    <select id="h-med">
+                        <option value="all">All medications</option>
+                    </select>
+
+                </label>
+
+            </div>
+
+            <div class="report-box">
+                <h2>Print adherence report</h2>
+                <form id="report-form" class="report-controls">
+                    <label class="sel" for="report-from">
+                        <span>From</span>
+                        <input id="report-from" name="from" type="date" required>
+                    </label>
+                    <label class="sel" for="report-to">
+                        <span>To</span>
+                        <input id="report-to" name="to" type="date" required>
+                    </label>
+                    <button type="submit" class="btn primary" id="print-report">
+                        Print report
+                    </button>
+                </form>
+                <p class="report-note">
+                    Includes taken and missed doses recorded during the selected dates.
+                </p>
+            </div>
+
+            <div id="h-list"></div>
+
+            <p class="empty" id="h-empty" hidden>
+                No records match these filters.
+            </p>
+
+        </section>
+
+
+        <!-- REMINDERS -->
+
+        <section
+            class="card rem"
+            data-view="reminders"
+            hidden
+            aria-labelledby="rem-h"
+        >
+
+            <div>
+
+                <h1 id="rem-h">Reminders</h1>
+
+                <p class="sub">
+                    Choose which medications remind you.
+                    Reminders are best-effort while this tab is open.
+                    Browser or device settings may delay them.
+                    They won't run after HealthMate is closed.
+                </p>
+
+            </div>
+
+
+            <div class="perm">
+
+                <div>
+
+                    <b id="perm-title"></b>
+
+                    <p class="sub" id="perm-text"></p>
+
+                </div>
+
+
+                <div class="perm-act">
+
+                    <button
+                        type="button"
+                        class="btn primary"
+                        id="perm-btn"
+                    >
+                        Enable notifications
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn"
+                        id="test-btn"
+                    >
+                        Send test alert
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- DEMO PRIVACY INFORMATION -->
+
+            <div
+                class="privacy-note"
+                id="demo-privacy"
+                hidden
+                aria-labelledby="privacy-h"
+            >
+
+                <div>
+
+                    <h2 id="privacy-h">Demo data and privacy</h2>
+
+                    <p class="sub">
+                        Demo accounts, medication schedules, and activity
+                        are stored in this browser on this device.
+                        This demo is not designed for real health information.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn bad"
+                    id="clear-demo-data"
+                >
+                    Clear demo data
+                </button>
+
+            </div>
+
+
+            <div>
+
+                <h2>Medication reminders</h2>
+
+                <ul id="rem-list"></ul>
+
+            </div>
+
+
+            <div>
+
+                <h2>Coming up today</h2>
+
+                <ul id="rem-next"></ul>
+
+                <p class="empty" id="rem-empty" hidden>
+                    No upcoming reminders for the rest of today.
+                </p>
+
+            </div>
+
+        </section>
+
+        <footer class="app-footer" data-view="home">
+            <span>&copy; 2026 HealthMate</span>
+            <span>Personal health, simplified</span>
+        </footer>
+
+    </main>
+
+    <section
+        class="print-sheet"
+        id="print-sheet"
+        aria-labelledby="print-title"
+        hidden
+    >
+        <h1 id="print-title">HealthMate medication list</h1>
+        <p id="print-date"></p>
+        <p id="print-adherence"></p>
+        <ul id="print-medications"></ul>
+        <p class="print-note" id="print-note">
+            Keep this list current and follow the instructions from your healthcare professional.
+        </p>
+    </section>
+
+    <!-- NOTIFICATION TOAST -->
+
+    <div
+        class="toast"
+        id="toast"
+        role="status"
+        aria-live="polite"
+    >
+
+        <span id="toast-msg"></span>
+
+        <button type="button" id="undo">
+            Undo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MEDICATION DIALOG ================= -->
+
+<dialog
+    id="med-dialog"
+    aria-labelledby="dlg-title"
+>
+
+    <form id="med-form" novalidate>
+
+        <h2 id="dlg-title">Add medication</h2>
+
+
+        <label for="f-name">Medication name</label>
+
+        <input
+            id="f-name"
+            name="medicationName"
+            type="text"
+            autocomplete="off"
+            aria-describedby="e-name"
+        >
+
+        <p class="err" id="e-name" role="alert"></p>
+
+
+        <label for="f-dose">Dose</label>
+
+        <input
+            id="f-dose"
+            name="dose"
+            type="text"
+            placeholder="e.g. 500 mg, 1 capsule"
+            autocomplete="off"
+            aria-describedby="dose-help e-dose"
+        >
+
+        <p class="sub" id="dose-help">
+            Enter the dose as directed by your healthcare professional.
+            HealthMate does not recommend doses.
+        </p>
+
+        <p class="err" id="e-dose" role="alert"></p>
+
+
+        <label for="f-freq">How often per day</label>
+
+        <select id="f-freq" name="frequency">
+
+            <option value="1">Once</option>
+
+            <option value="2">Twice</option>
+
+            <option value="3">Three times</option>
+
+        </select>
+
+
+        <fieldset>
+
+            <legend>Medication times</legend>
+
+            <div id="f-times"></div>
+
+            <p class="err" id="e-times" role="alert"></p>
+
+        </fieldset>
+
+
+        <label class="check">
+
+            <input
+                type="checkbox"
+                id="f-remind"
+                checked
+            >
+
+            Remind me at these times
+
+        </label>
+
+
+        <p class="err" id="e-form" role="alert"></p>
+
+
+        <div class="dlg-actions">
+
+            <button
+                type="button"
+                class="btn"
+                id="dlg-cancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="submit"
+                class="btn primary"
+                id="save-med"
+            >
+                Save medication
+            </button>
+
+        </div>
+
+    </form>
+
+</dialog>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script src="api.js" defer></script>
+<script src="script.js" defer></script>
+
+</body>
+</html>
