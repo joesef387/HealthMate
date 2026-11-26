@@ -54,6 +54,21 @@ Reminders are best-effort while HealthMate is open in a browser tab. Browser or
 device settings may delay notifications, and reminders will not run after the
 app is closed.
 
+## Find a nearby hospital
+
+1. On **Home**, select **Use my location**.
+2. When your browser asks, allow location access if you want to continue.
+3. Select **Open nearby hospitals in Google Maps** to view nearby results.
+
+HealthMate requests your location only after you choose this feature. The app
+uses the coordinates to prepare a Google Maps search link; it does not send
+them to the HealthMate backend. Opening the link shares the search location
+with Google Maps. If you deny access, allow it in your browser settings before
+trying again. Location availability depends on your browser and device.
+
+This feature only opens Maps; it does not contact a hospital or emergency
+service. For a life-threatening emergency, call your local emergency number.
+
 ## Using HealthMate on a phone
 
 Open the public HealthMate link in your phone's browser and sign in with your
