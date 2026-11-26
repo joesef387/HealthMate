@@ -2,9 +2,18 @@
 
 **Open HealthMate:** https://joesef387.github.io/HealthMate/
 
-HealthMate helps you organize medication schedules and keep a record of doses
-marked as taken or missed. It does not provide medical advice or recommend
-doses.
+HealthMate is a personal medication organizer: create an account with email,
+add medication schedules, mark doses as taken or missed, review recent history,
+and print a date-range adherence report; your records are saved to your account
+and displayed in its timezone. Use email sign-in—Google and Facebook sign-in
+are demonstration features. Reminders are best-effort and work only while the
+app is open in a browser tab. The optional hospital search requests your
+location only when you choose it and opens Google Maps; your coordinates are
+not sent to the HealthMate backend, but are included in the Maps search when
+you open that link. Deleting a medication deactivates its schedules, while its
+record and dose history remain stored. HealthMate does not provide medical
+advice or recommend doses; follow your healthcare professional's instructions.
+It does not contact hospitals or emergency services.
 
 ## Create an account or sign in
 
